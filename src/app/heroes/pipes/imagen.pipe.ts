@@ -2,12 +2,19 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Heroe } from '../interfaces/heroes.interface';
 
 @Pipe({
-  name: 'imagen'
+  name: 'imagen',
+  // pure: false // pure en false para que detecte cambios en cada fase del ciclo de vida...
 })
 export class ImagenPipe implements PipeTransform {
 
   transform(heroe: Heroe): string {
-    return `assets/heroes/${heroe.id}.jpg`; // assets/heroes/{{heroe.id}}.jpg
+    if (!heroe.id && !heroe.alt_image) {
+      return 'assets/no-image.png';
+    } else if ( heroe.alt_image ) {
+      return heroe.alt_image; 
+    } else {
+      return `assets/heroes/${heroe.id}.jpg`; // assets/heroes/{{heroe.id}}.jpg
+    }
   }
 
 }
